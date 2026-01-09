@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
+use App\Entity\Impl\BaseEntity;
 use App\Repository\LikeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LikeRepository::class)]
 #[ORM\Table(name: '`like`')]
-class Like
+class Like extends BaseEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

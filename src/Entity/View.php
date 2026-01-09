@@ -3,11 +3,11 @@
 namespace App\Entity;
 
 use App\Entity\Impl\BaseEntity;
-use App\Repository\CommentRepository;
+use App\Repository\ViewRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CommentRepository::class)]
-class Comment extends BaseEntity
+#[ORM\Entity(repositoryClass: ViewRepository::class)]
+class View extends BaseEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -17,8 +17,8 @@ class Comment extends BaseEntity
     #[ORM\Column]
     private ?int $tweet_id = null;
 
-    #[ORM\Column(length: 280)]
-    private ?string $content = null;
+    #[ORM\Column]
+    private ?int $user_id = null;
 
     public function getId(): ?int
     {
@@ -37,14 +37,14 @@ class Comment extends BaseEntity
         return $this;
     }
 
-    public function getContent(): ?string
+    public function getUserId(): ?int
     {
-        return $this->content;
+        return $this->user_id;
     }
 
-    public function setContent(string $content): static
+    public function setUserId(int $user_id): static
     {
-        $this->content = $content;
+        $this->user_id = $user_id;
 
         return $this;
     }

@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
+use App\Entity\Impl\BaseEntity;
 use App\Repository\TweetRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: TweetRepository::class)]
-class Tweet
+class Tweet extends BaseEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
