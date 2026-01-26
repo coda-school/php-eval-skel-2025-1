@@ -17,15 +17,16 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-     * Le user d'un tweet
+     * "Le user (auteur) d'un tweet"
+     * Version fusionnée : Jointure explicite avec sécurité isDeleted
      */
-    public function findUserByTweetId(int $tweetID): ?User
+    public function findAuthorByTweetId(int $tweetID): ?User
     {
         return $this->createQueryBuilder('u')
-            ->innerJoin('App\Entity\Tweet', 't', 'WITH', 't.createdBy = u.id')
-            ->andWhere('t.id = :tweetID')
-            ->andWhere('u.is_deleted = false')
-            ->andWhere('t.is_deleted = false')
+            ->innerJoin('App\Entity\Tweet', 't', 'WITH', 't.createdBy = u')
+            ->where('t.id = :tweetID')
+            ->andWhere('u.isDeleted = false')
+            ->andWhere('t.isDeleted = false')
             ->setParameter('tweetID', $tweetID)
             ->getQuery()
             ->getOneOrNullResult();

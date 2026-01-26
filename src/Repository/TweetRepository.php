@@ -17,16 +17,33 @@ class TweetRepository extends ServiceEntityRepository
     }
 
     /**
-     * Tous les tweets d’un user
+     * "Tous les tweets d’un user"
+     * Version fusionnée : sécurité + tri par date
      */
-    public function findTweetsByUserId(int $userID): array
+    public function findByUser(int $userID): array
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.createdBy = :userID')
-            ->andWhere('t.is_deleted = false')
+            ->where('t.createdBy = :userID')
+            ->andWhere('t.isDeleted = false')
             ->setParameter('userID', $userID)
             ->orderBy('t.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * "Le user d'un tweet"
+     * Récupère un tweet et son auteur en une seule requête SQL (Jointure optimisée)
+     */
+    public function findTweetWithUser(int $tweetID): ?Tweet
+    {
+        return $this->createQueryBuilder('t')
+            ->addSelect('u')
+            ->innerJoin('t.createdBy', 'u')
+            ->where('t.id = :tweetID')
+            ->andWhere('t.isDeleted = false')
+            ->setParameter('tweetID', $tweetID)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

@@ -17,43 +17,44 @@ class LikeRepository extends ServiceEntityRepository
     }
 
     /**
-     * Tous les likes d’un tweet
+     * Compte tous les likes d’un tweet
      */
-    public function countLikesByTweetId(int $tweetID): int
+    public function countByTweet(int $tweetID): int
     {
-        return (int)$this->createQueryBuilder('l')
-            ->select('COUNT(l)')
-            ->andWhere('l.tweet = :tweetID', 'l.is_deleted = false')
+        return (int) $this->createQueryBuilder('l')
+            ->select('COUNT(l.id)')
+            ->where('l.tweet = :tweetID')
+            ->andWhere('l.isDeleted = false')
             ->setParameter('tweetID', $tweetID)
             ->getQuery()
             ->getSingleScalarResult();
     }
 
     /**
-     * Tous les likes d'un user
+     * Compte tous les likes effectués par un utilisateur
      */
-    public function countLikesByUserId(int $userID): int
+    public function countByUser(int $userID): int
     {
-        return $this->createQueryBuilder('l')
+        return (int) $this->createQueryBuilder('l')
             ->select('COUNT(l.id)')
             ->where('l.createdBy = :userID')
-            ->andWhere('l.is_deleted = false')
+            ->andWhere('l.isDeleted = false')
             ->setParameter('userID', $userID)
             ->getQuery()
             ->getSingleScalarResult();
     }
 
     /**
-     * Tous les likes des tweets d'un user
+     * Compte tous les likes reçus sur les tweets d'un utilisateur
      */
-    public function countLikesOfTweetsByUserId(int $userID): int
+    public function countLikesOnUserTweets(int $userID): int
     {
-        return $this->createQueryBuilder('l')
+        return (int) $this->createQueryBuilder('l')
             ->select('COUNT(l.id)')
             ->innerJoin('l.tweet', 't')
             ->where('t.createdBy = :userID')
-            ->andWhere('t.is_deleted = false')
-            ->andWhere('l.is_deleted = false')
+            ->andWhere('t.isDeleted = false')
+            ->andWhere('l.isDeleted = false')
             ->setParameter('userID', $userID)
             ->getQuery()
             ->getSingleScalarResult();

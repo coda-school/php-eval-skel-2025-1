@@ -17,30 +17,30 @@ class ViewRepository extends ServiceEntityRepository
     }
 
     /**
-     * Toutes les vues d’un tweet
+     * Compte toutes les vues d’un tweet
      */
-    public function countViewsByTweetId(int $tweetID): int
+    public function countByTweet(int $tweetID): int
     {
-        return $this->createQueryBuilder('v')
+        return (int) $this->createQueryBuilder('v')
             ->select('COUNT(v.id)')
             ->where('v.tweet = :tweetID')
-            ->andWhere('v.is_deleted = false')
+            ->andWhere('v.isDeleted = false')
             ->setParameter('tweetID', $tweetID)
             ->getQuery()
             ->getSingleScalarResult();
     }
 
     /**
-     * Toutes les vues de tous les tweets d'un user
+     * Compte toutes les vues de tous les tweets d'un utilisateur
      */
-    public function countViewsOfTweetsByUserId(int $userID): int
+    public function countAllViewsOnUserTweets(int $userID): int
     {
-        return $this->createQueryBuilder('v')
+        return (int) $this->createQueryBuilder('v')
             ->select('COUNT(v.id)')
             ->innerJoin('v.tweet', 't')
             ->where('t.createdBy = :userID')
-            ->andWhere('t.is_deleted = false')
-            ->andWhere('v.is_deleted = false')
+            ->andWhere('t.isDeleted = false')
+            ->andWhere('v.isDeleted = false')
             ->setParameter('userID', $userID)
             ->getQuery()
             ->getSingleScalarResult();
