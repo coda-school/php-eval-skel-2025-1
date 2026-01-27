@@ -16,28 +16,33 @@ class ViewRepository extends ServiceEntityRepository
         parent::__construct($registry, View::class);
     }
 
-    //    /**
-    //     * @return View[] Returns an array of View objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('v')
-    //            ->andWhere('v.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('v.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * Toutes les vues d’un tweet
+     */
+    public function countViewsByTweetId(int $tweetID): int
+    {
+        return $this->createQueryBuilder('v')
+            ->select('COUNT(v.id)')
+            ->where('v.tweet = :tweetID')
+            ->andWhere('v.is_deleted = false')
+            ->setParameter('tweetID', $tweetID)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 
-    //    public function findOneBySomeField($value): ?View
-    //    {
-    //        return $this->createQueryBuilder('v')
-    //            ->andWhere('v.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    /**
+     * Toutes les vues de tous les tweets d'un user
+     */
+    public function countViewsOfTweetsByUserId(int $userID): int
+    {
+        return $this->createQueryBuilder('v')
+            ->select('COUNT(v.id)')
+            ->innerJoin('v.tweet', 't')
+            ->where('t.createdBy = :userID')
+            ->andWhere('t.is_deleted = false')
+            ->andWhere('v.is_deleted = false')
+            ->setParameter('userID', $userID)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

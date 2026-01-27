@@ -16,28 +16,31 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
-    //    /**
-    //     * @return Comment[] Returns an array of Comment objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * "Tous les commentaires d’un tweet"
+     */
+    public function findCommentsByTweetId(int $tweetID): array
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.tweet = :tweetID')
+            ->andWhere('c.is_deleted = false')
+            ->setParameter('tweetID', $tweetID)
+            ->orderBy('c.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 
-    //    public function findOneBySomeField($value): ?Comment
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    /**
+     * "Tous les commentaires d'un user"
+     */
+    public function findCommentsByUserId(int $userID): array
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.createdBy = :userID')
+            ->andWhere('c.is_deleted = false')
+            ->setParameter('userID', $userID)
+            ->orderBy('c.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -16,28 +16,46 @@ class LikeRepository extends ServiceEntityRepository
         parent::__construct($registry, Like::class);
     }
 
-    //    /**
-    //     * @return Like[] Returns an array of Like objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('l')
-    //            ->andWhere('l.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('l.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * Tous les likes d’un tweet
+     */
+    public function countLikesByTweetId(int $tweetID): int
+    {
+        return (int)$this->createQueryBuilder('l')
+            ->select('COUNT(l)')
+            ->andWhere('l.tweet = :tweetID', 'l.is_deleted = false')
+            ->setParameter('tweetID', $tweetID)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 
-    //    public function findOneBySomeField($value): ?Like
-    //    {
-    //        return $this->createQueryBuilder('l')
-    //            ->andWhere('l.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    /**
+     * Tous les likes d'un user
+     */
+    public function countLikesByUserId(int $userID): int
+    {
+        return $this->createQueryBuilder('l')
+            ->select('COUNT(l.id)')
+            ->where('l.createdBy = :userID')
+            ->andWhere('l.is_deleted = false')
+            ->setParameter('userID', $userID)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * Tous les likes des tweets d'un user
+     */
+    public function countLikesOfTweetsByUserId(int $userID): int
+    {
+        return $this->createQueryBuilder('l')
+            ->select('COUNT(l.id)')
+            ->innerJoin('l.tweet', 't')
+            ->where('t.createdBy = :userID')
+            ->andWhere('t.is_deleted = false')
+            ->andWhere('l.is_deleted = false')
+            ->setParameter('userID', $userID)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

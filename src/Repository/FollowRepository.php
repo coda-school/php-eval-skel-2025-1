@@ -16,28 +16,27 @@ class FollowRepository extends ServiceEntityRepository
         parent::__construct($registry, Follow::class);
     }
 
-    //    /**
-    //     * @return Follow[] Returns an array of Follow objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('f')
-    //            ->andWhere('f.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('f.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /* Nombre d'abonnés*/
+    public function countFollowersByUserId(int $userID): int
+    {
+        return $this->createQueryBuilder('f')
+            ->select('COUNT(f.id)')
+            ->where('f.following = :userID')
+            ->andWhere('f.is_deleted = false')
+            ->setParameter('userID', $userID)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 
-    //    public function findOneBySomeField($value): ?Follow
-    //    {
-    //        return $this->createQueryBuilder('f')
-    //            ->andWhere('f.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    /* Nombre d'abonnements*/
+    public function countFollowingsByUserId(int $userID): int
+    {
+        return $this->createQueryBuilder('f')
+            ->select('COUNT(f.id)')
+            ->where('f.follower = :userID')
+            ->andWhere('f.is_deleted = false')
+            ->setParameter('userID', $userID)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }
