@@ -1,0 +1,351 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: #000000;
+    color: #e7e9ea;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Menu en 3 colonnes */
+.container {
+    display: flex;
+    max-width: 1300px;
+    margin: 0 auto;
+    min-height: 100vh;
+}
+
+/* --- COLONNE GAUCHE --- */
+.sidebar {
+    flex: 0.25;
+    padding: 20px 10px; 
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #2f3336;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    align-items: flex-start; 
+}
+
+
+.logo {
+    margin-bottom: 20px;
+    padding-left: 10px; 
+}
+
+.logo img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%; 
+    object-fit: cover;
+}
+
+.logo-container {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    height: 50px; 
+}
+
+.funny-logo {
+    width: 50px; 
+    height: auto;
+}
+
+
+.sidebar nav a {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    padding: 12px 20px;
+    border-radius: 30px;
+    margin-bottom: 5px;
+    transition: background 0.2s;
+    width: fit-content;
+}
+
+.sidebar nav a:hover {
+    background-color: #181818;
+}
+
+.sidebar nav a i {
+    margin-right: 20px;
+    font-size: 24px;
+}
+
+.sidebar nav a.active {
+    font-weight: bold;
+}
+
+.tweet-btn {
+    background-color: #1d9bf0;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 30px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 90%;
+    box-shadow: 0 4px 10px rgba(29, 155, 240, 0.3);
+}
+
+.tweet-btn:hover {
+    background-color: #1a8cd8;
+}
+
+.user-profile {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 50px;
+    cursor: pointer;
+    width: 100%; 
+    transition: background 0.2s;
+}
+
+.user-profile:hover {
+    background-color: #181818;
+}
+
+/* --- STYLES POUR LES AVATARS --- */
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; 
+    object-fit: cover; 
+    margin-right: 15px;
+    border: 1px solid rgba(0,0,0,0.1); 
+}
+
+/* --- COLONNE CENTRALE  --- */
+.feed {
+    flex: 0.5;
+    border-right: 1px solid #2f3336;
+    max-width: 600px; 
+}
+
+.feed-header {
+    height: 53px;
+    border-bottom: 1px solid #2f3336;
+    display: flex;
+    position: sticky;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(12px);
+    z-index: 10;
+}
+
+.feed-header h2 {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    cursor: pointer;
+    position: relative;
+}
+
+.feed-header h2:hover {
+    background-color: #181818;
+}
+
+.feed-header h2:first-child::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 60px;
+    height: 4px;
+    background-color: #1d9bf0;
+    border-radius: 2px;
+}
+
+.create-post {
+    padding: 15px;
+    display: flex;
+    border-bottom: 1px solid #2f3336;
+}
+
+.input-area {
+    flex: 1;
+}
+
+.input-area input {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    outline: none;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #2f3336;
+    padding-top: 10px;
+}
+
+.actions .icons i {
+    color: #1d9bf0;
+    margin-right: 15px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.post-btn-small {
+    background-color: #1d9bf0;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 0.6; 
+}
+
+/* Posts */
+.post {
+    display: flex;
+    padding: 15px;
+    border-bottom: 1px solid #2f3336;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.post:hover {
+    background-color: #080808;
+}
+
+
+.post-content {
+    flex: 1;
+}
+
+.post-header {
+    margin-bottom: 5px;
+}
+
+.post-header .name {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.post-header .handle {
+    color: #71767b;
+}
+
+.text {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    color: #71767b;
+    max-width: 425px;
+    font-size: 14px;
+}
+
+.post-footer i {
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 8px;
+    border-radius: 50%;
+}
+
+.post-footer span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.post-footer span:hover i.fa-comment { background-color: rgba(29, 155, 240, 0.1); color: #1d9bf0; }
+.post-footer span:hover i.fa-retweet { background-color: rgba(0, 186, 124, 0.1); color: #00ba7c; }
+.post-footer span:hover i.fa-heart { background-color: rgba(249, 24, 128, 0.1); color: #f91880; }
+
+
+/* --- COLONNE DROITE  --- */
+.widgets {
+    flex: 0.25;
+    padding: 20px 30px;
+}
+
+.search-bar {
+    background-color: #202327;
+    padding: 10px 20px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+}
+
+.search-bar:focus-within {
+     background-color: black;
+     border-color: #1d9bf0;
+}
+
+.search-bar i {
+    color: #71767b;
+    margin-right: 15px;
+}
+
+.search-bar input {
+    background: transparent;
+    border: none;
+    color: white;
+    width: 100%;
+    outline: none;
+}
+
+.trends-container {
+    background-color: #16181c;
+    border-radius: 16px;
+    padding: 15px;
+}
+
+.trends-container h3 {
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.trend-item {
+    margin-bottom: 20px;
+    cursor: pointer;
+    padding: 10px;
+    margin: 0 -10px;
+    transition: background 0.2s;
+}
+
+.trend-item:hover {
+    background-color: rgba(255,255,255,0.03);
+}
+
+.trend-item .meta {
+    font-size: 13px;
+    color: #71767b;
+}
+
+.trend-item .hashtag {
+    font-weight: bold;
+    margin: 2px 0;
+}
