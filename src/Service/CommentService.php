@@ -5,16 +5,21 @@ namespace App\Service;
 
 use App\Repository\CommentRepository;
 
-class CommentService
+readonly class CommentService
 {
     public function __construct (
-        private readonly CommentRepository $commentRepository,
+        private CommentRepository $commentRepository,
     )
     {
     }
 
-    public function getLikesOfTweet(int $tweetId): int
+    public function findCommentsByTweetId(int $tweetId): array
     {
-        return $this->commentRepository->countLikesByTweetId($tweetId);
+        return $this->commentRepository->findCommentsByTweetId($tweetId);
+    }
+
+    public function findCommentsByUserId(int $userId): array
+    {
+        return $this->commentRepository->findCommentsByUserId($userId);
     }
 }

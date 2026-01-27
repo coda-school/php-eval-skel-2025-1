@@ -5,16 +5,21 @@ namespace App\Service;
 
 use App\Repository\ViewRepository;
 
-class ViewService
+readonly class ViewService
 {
     public function __construct (
-        private readonly ViewRepository $viewRepository,
+        private ViewRepository $viewRepository,
     )
     {
     }
 
-    public function getViewsOfTweet(int $tweetId): int
+    public function countViewsByTweetId(int $tweetId): int
     {
         return $this->viewRepository->countViewsByTweetId($tweetId);
+    }
+
+    public function countViewsOfTweetsByUserId(int $userId): int
+    {
+        return $this->viewRepository->countViewsOfTweetsByUserId($userId);
     }
 }

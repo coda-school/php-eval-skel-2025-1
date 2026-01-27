@@ -4,16 +4,26 @@ namespace App\Service;
 
 use App\Repository\LikeRepository;
 
-class LikeService
+readonly class LikeService
 {
     public function __construct (
-        private readonly LikeRepository $likeRepository,
+        private LikeRepository $likeRepository,
     )
     {
     }
 
-    public function getLikesOfTweet(int $tweetId): int
+    public function countLikesByTweetId(int $tweetId): int
     {
         return $this->likeRepository->countLikesByTweetId($tweetId);
+    }
+
+    public function countLikesByUserId(int $userId): int
+    {
+        return $this->likeRepository->countLikesByUserId($userId);
+    }
+
+    public function countLikesOfTweetsByUserId(int $userId): int
+    {
+        return $this->likeRepository->countLikesOfTweetsByUserId($userId);
     }
 }
