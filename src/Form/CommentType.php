@@ -3,29 +3,31 @@
 namespace App\Form;
 
 use App\Entity\Comment;
+use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class TweetType extends AbstractType
+class CommentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('content', null, [
-                'label' => 'Quoi de neuf ?',
-                'attr' => ['placeholder' => 'Écrivez votre tweet ici...']
+                'label' => 'Votre réponse', // Un label adapté au commentaire
+                'attr' => ['placeholder' => 'Écrivez votre commentaire ici...']
             ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Tweeter'
+            ->add('submit', SubmitType::class, [ // Change 'null' par SubmitType::class
+                'label' => 'Répondre',
             ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Tweet::class,
+            'data_class' => Comment::class,
         ]);
     }
 }
