@@ -17,4 +17,9 @@ readonly class TweetService
     {
         return $this->tweetRepository->findTweetsByUserId($userId);
     }
+
+    public function findFollowTimelineByUserId(int $userId): array
+    {
+        return $this->tweetRepository->findFollowTimelineByUserId($userId);
+    }
 }
