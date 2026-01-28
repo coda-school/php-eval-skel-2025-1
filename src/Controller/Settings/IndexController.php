@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Profil;
+namespace App\Controller\Settings;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -8,11 +8,11 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class IndexController extends AbstractController
 {
-    #[Route('/profil', name: 'profil', methods: ['GET'])]
+    #[Route('/settings/index', name: 'app_settings_index')]
     public function index(): Response
     {
-        return $this->render('profil/index/index.html.twig', [
-            'controller_name' => 'Profil/IndexController',
+        return $this->render('settings/index/index.html.twig', [
+            'controller_name' => 'Settings/IndexController',
         ]);
     }
 }
