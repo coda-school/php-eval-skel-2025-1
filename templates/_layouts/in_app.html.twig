@@ -1,7 +1,62 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <div class="container">
+        <header class="sidebar">
+            <div class="logo">
+                <img src="{{ asset('image.png') }}" alt="Logo" class="funny-logo">
+            </div>
+            
+            <nav>
+                <a href="#" class="active"><i class="fa-solid fa-house"></i> <span>Accueil</span></a>
+                <a href="#"><i class="fa-solid fa-magnifying-glass"></i> <span>Explorer</span></a>
+                <a href="#"><i class="fa-regular fa-bell"></i> <span>Notifications</span></a>
+                <a href="#"><i class="fa-regular fa-envelope"></i> <span>Messages</span></a>
+                <a href="#"><i class="fa-regular fa-user"></i> <span>Profil</span></a>
+            </nav>
 
-	{% block content %}{% endblock %}
+            <button class="tweet-btn">Poster</button>
 
+            <div class="user-profile">
+                <img src="{{ asset('pdp.jpg') }}" alt="Mon profil" class="avatar">
+                <div class="user-info">
+                    <span class="name">Ethan BG</span>
+                    <span class="handle">@JeSoustiensCODA</span>
+                </div>
+                <i class="fa-solid fa-ellipsis" style="margin-left: auto;"></i>
+            </div>
+        </header>
+
+        <main class="feed">
+            {% block content %}{% endblock %}
+        </main>
+
+        <aside class="widgets">
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Recherche">
+            </div>
+
+            <div class="trends-container">
+                <h3>Tendances pour vous</h3>
+                <div class="trend-item">
+                    <span class="meta">Technologie • Tendances</span>
+                    <p class="hashtag">CODA forme les futurs génies</p>
+                    <span class="meta">12,5 k posts</span>
+                </div>
+
+                <div class="trend-item">
+                    <span class="meta">Politique • Tendances</span>
+                    <p class="hashtag">JN et Véréna élus président</p>
+                    <span class="meta">54,9 k posts</span>
+                </div>
+
+                <div class="trend-item">
+                    <span class="meta">Sciences • Tendances</span>
+                    <p class="hashtag">Un projet fonctionne moins bien à 2 plutôt qu'à 4</p>
+                    <span class="meta">454,9 k posts</span>
+                </div>
+            </div>
+        </aside>
+    </div>
 {% endblock %}
