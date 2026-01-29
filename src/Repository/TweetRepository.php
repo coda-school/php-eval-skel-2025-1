@@ -46,4 +46,13 @@ class TweetRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function findAllTweets(): array
+    {
+        return $this->createQueryBuilder('t')
+            ->where('t.isDeleted = false')
+            ->orderBy('t.createdDate', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

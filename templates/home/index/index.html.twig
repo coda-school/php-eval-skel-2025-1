@@ -23,37 +23,31 @@
         </div>
     </div>
 
-    <div class="post">
-         <img src="https://i.pravatar.cc/100?img=12" alt="Avatar Dev Web" class="avatar">
-        <div class="post-content">
-            <div class="post-header">
-                <span class="name">Terreur Nocturne</span>
-                <span class="handle">@LaMachine • 2h</span>
-            </div>
-            <p class="text">Il est actuellement 22h30, je veux dormir et pas faire une interface de faux "X"</p>
-            <div class="post-footer">
-                <span><i class="fa-regular fa-comment"></i> 12</span>
-                <span><i class="fa-solid fa-retweet"></i> 5</span>
-                <span><i class="fa-regular fa-heart"></i> 42</span>
-                <span><i class="fa-solid fa-chart-simple"></i> 1.2k</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="post">
-         <img src="https://i.pravatar.cc/100?img=3" alt="Avatar Elon Fake" class="avatar">
-        <div class="post-content">
-            <div class="post-header">
-                <span class="name">Elon Grec</span>
-                <span class="handle">@MarchandDeSable • 4h</span>
-            </div>
-            <p class="text">JE VEUX DORMIRRRRRRRRRRRRRRRRRR</p>
-            <div class="post-footer">
-                <span><i class="fa-regular fa-comment"></i> 540</span>
-                <span><i class="fa-solid fa-retweet"></i> 10k</span>
-                <span><i class="fa-regular fa-heart"></i> 25k</span>
-                <span><i class="fa-solid fa-chart-simple"></i> 1M</span>
+    {% for tweet in tweets %}
+        <div class="post">
+            <img src="https://i.pravatar.cc/100?u={{ tweet.createdBy.id|default('default') }}" alt="Avatar" class="avatar">
+            <div class="post-content">
+                <div class="post-header">
+                    <span class="name">{{ tweet.createdBy.username|default('Anonyme') }}</span>
+                    <span class="handle">@{{ tweet.createdBy.username|default('anonyme')|lower }} • {{ tweet.createdDate|date('d/m H:i') }}</span>
+                </div>
+                <p class="text">{{ tweet.content }}</p>
+                <div class="post-footer">
+                    <span><i class="fa-regular fa-comment"></i> 0</span>
+                    <span><i class="fa-solid fa-retweet"></i> 0</span>
+                    <a href="{{ path('app_tweet_like', {'id': tweet.id}) }}" class="like-link">
+                        <span>
+                            <i class="fa-{{ likeService.countLikesByTweetId(tweet.id) > 0 ? 'solid' : 'regular' }} fa-heart"></i> 
+                            {{ likeService.countLikesByTweetId(tweet.id) }}
+                        </span>
+                    </a>
+                    <span><i class="fa-solid fa-chart-simple"></i> 0</span>
+                </div>
             </div>
         </div>
-    </div>
+    {% else %}
+        <div class="post">
+            <p class="text">Aucun tweet pour le moment.</p>
+        </div>
+    {% endfor %}
 {% endblock %}
