@@ -53,6 +53,7 @@ class TweetRepository extends ServiceEntityRepository
             ->select('t')
             ->where('t.isDeleted = false')
             ->orderBy('t.createdDate', 'DESC')
+            ->setMaxResults(20)
             ->getQuery()
             ->getResult();
     }

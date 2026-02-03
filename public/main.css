@@ -124,6 +124,25 @@ a {
     flex: 0.5;
     border-right: 1px solid #2f3336;
     max-width: 600px;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.feed::-webkit-scrollbar {
+    width: 8px;
+}
+
+.feed::-webkit-scrollbar-track {
+    background: #000;
+}
+
+.feed::-webkit-scrollbar-thumb {
+    background: #2f3336;
+    border-radius: 4px;
+}
+
+.feed::-webkit-scrollbar-thumb:hover {
+    background: #3e4144;
 }
 
 .feed-header {

@@ -22,4 +22,14 @@ readonly class TweetService
     {
         return $this->tweetRepository->findFollowTimelineByUserId($userId);
     }
+
+    public function findAll(): array
+    {
+        return $this->tweetRepository->findAllTweets();
+    }
+
+    public function findById(int $id): ?\App\Entity\Tweet
+    {
+        return $this->tweetRepository->find($id);
+    }
 }

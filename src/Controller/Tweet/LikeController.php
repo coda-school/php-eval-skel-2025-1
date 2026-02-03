@@ -20,16 +20,21 @@ final class LikeController extends AbstractController
     (
         int $id,
         TweetService $tweetService,
-        LikeService $likeService,
         EntityManagerInterface $entityManager
     ): Response
     {
         $tweet = $tweetService->findById($id);
+        if (!$tweet) {
+            throw $this->createNotFoundException('Tweet non trouvé');
+        }
 
         $user = $this->getUser();
+        if (!$user instanceof User) {
+            return $this->redirectToRoute('app_login');
+        }
 
-        $likeService->toggleLike($user, $tweet, $entityManager);
-        $like = $this->likeRepository->findOneBy([
+        $likeRepository = $entityManager->getRepository(Like::class);
+        $like = $likeRepository->findOneBy([
             'createdBy' => $user,
             'tweet_id' => $tweet->getId(),
             'isDeleted' => false
@@ -42,13 +47,13 @@ final class LikeController extends AbstractController
         } else {
             $like = new Like();
             $like->setTweetId($tweet->getId());
+            $like->setUserId($user->getId());
             $like->setCreatedBy($user);
             $like->setCreatedDate(new \DateTime());
             $entityManager->persist($like);
         }
         $entityManager->flush();
 
-        // Rediriger vers la page précédente ou l'accueil
         return $this->redirectToRoute('app_home_index');
     }
 }
