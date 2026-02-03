@@ -19,11 +19,11 @@ class CommentRepository extends ServiceEntityRepository
     /**
      * "Tous les commentaires d’un tweet"
      */
-    public function findByTweet(int $tweetID): array
+    public function findCommentsByTweetId(int $tweetID): array
     {
         return $this->createQueryBuilder('c')
             ->where('c.tweet = :tweetID')
-            ->andWhere('c.isDeleted = false') // Correction : camelCase pour Doctrine
+            ->andWhere('c.isDeleted = false')
             ->setParameter('tweetID', $tweetID)
             ->orderBy('c.createdAt', 'DESC')
             ->getQuery()

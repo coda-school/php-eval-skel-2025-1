@@ -34,7 +34,7 @@ class UserRepository extends ServiceEntityRepository
      */
     public function findLastFollowedTweets(int $userId): array
     {
-        return $this->getEntityManager()->createQueryBuilder()
+        return $this->createQueryBuilder('t')
             ->select('t')
             ->from('App\Entity\Tweet', 't')
             ->innerJoin('App\Entity\Follow', 'f', 'WITH', 't.createdBy = f.following')

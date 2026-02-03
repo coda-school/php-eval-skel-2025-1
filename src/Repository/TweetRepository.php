@@ -35,10 +35,10 @@ class TweetRepository extends ServiceEntityRepository
      * "Le user d'un tweet"
      * Récupère un tweet et son auteur en une seule requête SQL (Jointure optimisée)
      */
-    public function findTweetWithUser(int $tweetID): ?Tweet
+    public function findTweetByUser(int $tweetID): ?Tweet
     {
         return $this->createQueryBuilder('t')
-            ->addSelect('u')
+            ->select('u')
             ->innerJoin('t.createdBy', 'u')
             ->where('t.id = :tweetID')
             ->andWhere('t.isDeleted = false')
@@ -50,6 +50,7 @@ class TweetRepository extends ServiceEntityRepository
     public function findAllTweets(): array
     {
         return $this->createQueryBuilder('t')
+            ->select('t')
             ->where('t.isDeleted = false')
             ->orderBy('t.createdDate', 'DESC')
             ->getQuery()

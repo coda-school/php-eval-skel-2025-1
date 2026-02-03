@@ -19,7 +19,7 @@ class LikeRepository extends ServiceEntityRepository
     /**
      * Compte tous les likes d’un tweet
      */
-    public function countByTweet(int $tweetID): int
+    public function countLikesByTweetId(int $tweetID): int
     {
         return (int) $this->createQueryBuilder('l')
             ->select('COUNT(l.id)')
@@ -59,4 +59,6 @@ class LikeRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+
 }
