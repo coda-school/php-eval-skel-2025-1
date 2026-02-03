@@ -17,8 +17,7 @@ class TweetRepository extends ServiceEntityRepository
     }
 
     /**
-     * "Tous les tweets d’un user"
-     * Version fusionnée : sécurité + tri par date
+     * "Tous les tweets d’un user + tri par date"
      */
     public function findByUser(int $userID): array
     {
@@ -32,8 +31,7 @@ class TweetRepository extends ServiceEntityRepository
     }
 
     /**
-     * "Le user d'un tweet"
-     * Récupère un tweet et son auteur en une seule requête SQL (Jointure optimisée)
+     * Récupère un tweet et son auteur
      */
     public function findTweetByUser(int $tweetID): ?Tweet
     {
