@@ -33,7 +33,7 @@ class CommentRepository extends ServiceEntityRepository
     /**
      * "Tous les commentaires d'un user"
      */
-    public function findByUser(int $userID): array
+    public function findCommentsByUserId(int $userID): array
     {
         return $this->createQueryBuilder('c')
             ->where('c.createdBy = :userID')

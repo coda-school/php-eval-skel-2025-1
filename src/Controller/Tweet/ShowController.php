@@ -2,36 +2,42 @@
 
 namespace App\Controller\Tweet;
 
-use App\Repository\TweetRepository;
 use App\Service\CommentService;
 use App\Service\LikeService;
+use App\Service\TweetService;
+use App\Service\UserService;
 use App\Service\ViewService;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class ShowController extends AbstractController
 {
-    #[ORM\Column(type: 'string')]
-    readonly private LikeService $likeService;
-    readonly private ViewService $viewService;
-    readonly private CommentService $commentService;
-
-    #[Route('/tweet/show', name: 'app_tweet_show', methods: ['GET'])]
+    #[Route('/tweet/{id}', name: 'app_tweet_show', methods: ['GET'])]
     public function index
     (
-        $tweetId,
+        LikeService    $likeService,
+        ViewService    $viewService,
+        CommentService $commentService,
+        UserService    $userService,
+        TweetService   $tweetService,
+                       $id,
     ): Response
     {
-        $nbLikes = $this->likeService->countLikesByTweetId($tweetId);
-        $nbViews = $this->viewService->countViewsByTweetId($tweetId);
-        $listComments = $this->commentService->findCommentsByTweetId($tweetId);
+        $tweet = $tweetService->findTweetById($id);
+        $author = $userService->findUserByTweetId($id);
+        $nbLikes = $likeService->countLikesByTweetId($id);
+        $nbViews = $viewService->countViewsByTweetId($id);
+        $listComments = $commentService->findCommentsByTweetId($id);
+        $nbComments = sizeof($listComments);
 
         return $this->render('tweet/show/index.html.twig', [
+            'tweet' => $tweet,
+            'author' => $author,
+            'nb Comments' => $nbComments,
             'likes' => $nbLikes,
             'views' => $nbViews,
-            'commentaires' => $listComments,
+            'All Comments' => $listComments,
         ]);
     }
 }

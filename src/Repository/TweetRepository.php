@@ -17,9 +17,10 @@ class TweetRepository extends ServiceEntityRepository
     }
 
     /**
-     * "Tous les tweets d’un user + tri par date"
+     * "Tous les tweets d’un user"
+     * Version fusionnée : sécurité + tri par date
      */
-    public function findByUser(int $userID): array
+    public function findTweetsByUserId(int $userID): array
     {
         return $this->createQueryBuilder('t')
             ->where('t.createdBy = :userID')
@@ -31,27 +32,39 @@ class TweetRepository extends ServiceEntityRepository
     }
 
     /**
-     * Récupère un tweet et son auteur
+     * Récupère les derniers tweets des comptes suivis par un utilisateur
      */
-    public function findTweetByUser(int $tweetID): ?Tweet
+    public function findFollowTimelineByUserId(int $userId): array
     {
         return $this->createQueryBuilder('t')
-            ->select('u')
-            ->innerJoin('t.createdBy', 'u')
-            ->where('t.id = :tweetID')
-            ->andWhere('t.isDeleted = false')
-            ->setParameter('tweetID', $tweetID)
+            ->select('t')
+            ->from('App\Entity\Tweet', 't')
+            ->innerJoin('App\Entity\Follow', 'f', 'WITH', 't.createdBy = f.following')
+            ->where('f.follower = :userId')
+            ->andWhere('t.is_deleted = false')
+            ->andWhere('f.is_deleted = false')
+            ->setParameter('userId', $userId)
+            ->orderBy('t.createdAt', 'DESC')
+            ->setMaxResults(20)
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getResult();
     }
 
+    public function findTweetById(int $tweetId): ?Tweet
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t')
+            ->where('t.id = :tweetId')
+            ->setParameter('tweetId', $tweetId)
+            ->getQuery()
+            ->getResult();
+    }
     public function findAllTweets(): array
     {
         return $this->createQueryBuilder('t')
             ->select('t')
             ->where('t.isDeleted = false')
             ->orderBy('t.createdDate', 'DESC')
-            ->setMaxResults(20)
             ->getQuery()
             ->getResult();
     }
