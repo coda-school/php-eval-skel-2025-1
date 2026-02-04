@@ -1,20 +1,52 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello Tweet/ShowController!{% endblock %}
+{% block title %}Tweet de {{ author.username }}{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div class="container mt-4">
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">@{{ author.username }}</h5>
+            <p class="card-text">{{ tweet.content }}</p>
+            <div class="text-muted small">
+                {{ tweet.createdDate|date('d/m/Y H:i') }} | 
+                {{ likes }} Likes | 
+                {{ views }} Vues | 
+                {{ nbComments }} Commentaires
+            </div>
+        </div>
+    </div>
 
-<div class="example-wrapper">
-    <h1>Hello {{ bonjour }}! ✅</h1>
+    <hr>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/home/ethan/Documents/CODA/php/Projet Tweet Hub/php-eval-skel-2025-1/src/Controller/Tweet/ShowController.php</code></li>
-        <li>Your template at <code>/home/ethan/Documents/CODA/php/Projet Tweet Hub/php-eval-skel-2025-1/templates/tweet/show/index.html.twig</code></li>
-    </ul>
+    <h3>Commentaires</h3>
+    
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <div class="mb-4">
+            <a href="{{ path('app_comment_create', {'tweetId': tweet.id}) }}" class="btn btn-primary">Ajouter un commentaire</a>
+        </div>
+    {% endif %}
+
+    <div class="list-group">
+        {% for comment in listComments %}
+            <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                    <h6 class="mb-1">@{{ comment.createdBy.username }}</h6>
+                    <small>{{ comment.createdDate|date('d/m/Y H:i') }}</small>
+                </div>
+                <p class="mb-1">{{ comment.content }}</p>
+                
+                {% if is_granted('IS_AUTHENTICATED_FULLY') and comment.createdBy == app.user %}
+                    <div class="mt-2">
+                        <form action="{{ path('app_comment_delete', {'id': comment.id}) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer ce commentaire ?');" style="display: inline;">
+                            <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+        {% else %}
+            <p>Aucun commentaire pour le moment.</p>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

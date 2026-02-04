@@ -22,10 +22,10 @@ class CommentRepository extends ServiceEntityRepository
     public function findCommentsByTweetId(int $tweetID): array
     {
         return $this->createQueryBuilder('c')
-            ->where('c.tweet = :tweetID')
+            ->where('c.tweet_id = :tweetID')
             ->andWhere('c.isDeleted = false')
             ->setParameter('tweetID', $tweetID)
-            ->orderBy('c.createdAt', 'DESC')
+            ->orderBy('c.createdDate', 'DESC')
             ->getQuery()
             ->getResult();
     }
@@ -39,8 +39,21 @@ class CommentRepository extends ServiceEntityRepository
             ->where('c.createdBy = :userID')
             ->andWhere('c.isDeleted = false')
             ->setParameter('userID', $userID)
-            ->orderBy('c.createdAt', 'DESC')
+            ->orderBy('c.createdDate', 'DESC')
             ->getQuery()
             ->getResult();
+    }
+
+    public function save(Comment $comment): void
+    {
+        $this->getEntityManager()->persist($comment);
+        $this->getEntityManager()->flush();
+    }
+
+    public function remove(Comment $comment): void
+    {
+        $comment->setIsDeleted(true);
+        $comment->setDeletedDate(new \DateTime());
+        $this->getEntityManager()->flush();
     }
 }

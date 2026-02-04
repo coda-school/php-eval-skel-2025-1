@@ -1,20 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello Comment/CreateController!{% endblock %}
+{% block title %}Ajouter un commentaire{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div class="container mt-4">
+    <h1>Ajouter un commentaire</h1>
+    <p>En réponse au tweet de <strong>@{{ tweet.createdBy.username }}</strong> :</p>
+    <blockquote class="blockquote border-start ps-3">
+        <p>{{ tweet.content }}</p>
+    </blockquote>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <div class="card">
+        <div class="card-body">
+            {{ form_start(form) }}
+                {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/app/src/Controller/Comment/CreateController.php</code></li>
-        <li>Your template at <code>/app/templates/comment/create/index.html.twig</code></li>
-    </ul>
+    <div class="mt-3">
+        <a href="{{ path('app_tweet_show', {'id': tweet.id}) }}" class="btn btn-secondary">Annuler</a>
+    </div>
 </div>
 {% endblock %}

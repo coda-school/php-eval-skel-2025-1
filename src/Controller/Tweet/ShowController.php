@@ -34,10 +34,10 @@ final class ShowController extends AbstractController
         return $this->render('tweet/show/index.html.twig', [
             'tweet' => $tweet,
             'author' => $author,
-            'nb Comments' => $nbComments,
+            'nbComments' => $nbComments,
             'likes' => $nbLikes,
             'views' => $nbViews,
-            'All Comments' => $listComments,
+            'listComments' => $listComments,
         ]);
     }
 }

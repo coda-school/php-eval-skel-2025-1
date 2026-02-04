@@ -22,4 +22,19 @@ readonly class CommentService
     {
         return $this->commentRepository->findCommentsByUserId($userId);
     }
+
+    public function create(\App\Entity\Comment $comment): void
+    {
+        $this->commentRepository->save($comment);
+    }
+
+    public function delete(\App\Entity\Comment $comment): void
+    {
+        $this->commentRepository->remove($comment);
+    }
+
+    public function findById(int $id): ?\App\Entity\Comment
+    {
+        return $this->commentRepository->find($id);
+    }
 }
