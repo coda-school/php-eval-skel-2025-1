@@ -38,7 +38,7 @@ class TweetRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('t')
             ->select('t')
-            ->from('App\Entity\Tweet', 't')
+            ->from('Tweet', 't')
             ->innerJoin('App\Entity\Follow', 'f', 'WITH', 't.createdBy = f.following')
             ->where('f.follower = :userId')
             ->andWhere('t.is_deleted = false')
