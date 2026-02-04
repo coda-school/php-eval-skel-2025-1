@@ -34,7 +34,7 @@ readonly class TweetService
         return $this->tweetRepository->findAllTweets();
     }
 
-    public function findById(int $id): ?\App\Entity\Tweet
+    public function findById(int $id): ?Tweet
     {
         return $this->tweetRepository->find($id);
     }
