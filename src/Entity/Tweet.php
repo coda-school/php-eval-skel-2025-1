@@ -49,4 +49,19 @@ class Tweet extends BaseEntity
 
         return $this;
     }
+
+    public function getAgo(): string
+    {
+        $now = new \DateTime();
+        $diff = $now->diff($this->getCreatedDate());
+
+        return match (true) {
+            $diff->y > 0 => "Il y a " . $diff->y . " an" . ($diff->y > 1 ? "s" : ""),
+            $diff->m > 0 => "Il y a " . $diff->m . " mois",
+            $diff->d > 0 => "Il y a " . $diff->d . " j",
+            $diff->h > 0 => "Il y a " . $diff->h . " h",
+            $diff->i > 0 => "Il y a " . $diff->i . " min",
+            default => "À l'instant",
+        };
+    }
 }

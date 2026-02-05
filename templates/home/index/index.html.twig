@@ -33,7 +33,7 @@
                     <a href="{{ path('app_profile_show', {'id': tweet.createdBy.id}) }}" class="profile-link">
                         <span class="name">{{ tweet.createdBy.username|default('Anonyme') }}</span>
                     </a>
-                    <span class="handle">@{{ tweet.createdBy.username|default('anonyme')|lower }} • {{ tweet.createdDate|date('d/m H:i') }}</span>
+                    <span class="handle">@{{ tweet.createdBy.username|default('anonyme')|lower }} • {{ tweet.ago }}</span>
                 </div>
                 <p class="text">{{ tweet.content }}</p>
                 <div class="post-footer">
