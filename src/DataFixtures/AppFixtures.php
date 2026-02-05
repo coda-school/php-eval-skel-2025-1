@@ -98,10 +98,8 @@ class AppFixtures extends Fixture
             $user->setPassword($fixedPassword);
             $user->setBio($faker->sentence);
             $user->setTheme('light');
-            $user->setCreatedDate($faker->dateTimeBetween('-1 year', 'now'));
 
             // Grâce à ton patch BaseEntity, on peut mettre null ici sans faire planter Doctrine !
-            $user->setCreatedBy(null);
 
             $manager->persist($user);
 
@@ -112,7 +110,7 @@ class AppFixtures extends Fixture
                 $tweet->setUid(Uuid::v4());
                 $tweet->setContent($faker->randomElement(self::TWEET_CONTENTS));
                 $tweet->setCreatedBy($user); // L'auteur est bien l'utilisateur courant
-                $tweet->setCreatedDate($faker->dateTimeBetween($user->getCreatedDate(), 'now'));
+                $tweet->setCreatedDate($faker->dateTimeBetween('2026-01-01', 'now'));
 
                 $manager->persist($tweet);
             }
