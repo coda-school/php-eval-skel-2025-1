@@ -23,6 +23,7 @@ final class IndexController extends AbstractController
         #[MapQueryParameter]
         int $limit = 10,
     ): Response
+    public function index(TweetService $tweetService, LikeService $likeService, \App\Service\CommentService $commentService): Response
     {
         $user = $this->getUser();
         if (!$user) {
@@ -41,6 +42,7 @@ final class IndexController extends AbstractController
             'tweets' => $tweets,
             'maxPaginationPage' => $maxPaginationPage,
             'likeService' => $likeService,
+            'commentService' => $commentService,
         ]);
     }
 }

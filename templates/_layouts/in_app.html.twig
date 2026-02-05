@@ -17,14 +17,18 @@
 
             <button class="tweet-btn">Poster</button>
 
-            <div class="user-profile">
-                <img src="{{ asset('pdp.jpg') }}" alt="Mon profil" class="avatar">
-                <div class="user-info">
-                    <span class="name">Ethan BG</span>
-                    <span class="handle">@JeSoustiensCODA</span>
+            {% if app.user %}
+            <a href="{{ path('app_profile_show', {'id': app.user.id}) }}" class="user-profile-link">
+                <div class="user-profile">
+                    <img src="{{ asset('pdp.jpg') }}" alt="Mon profil" class="avatar">
+                    <div class="user-info">
+                        <span class="name">{{ app.user.username }}</span>
+                        <span class="handle">@{{ app.user.username|lower }}</span>
+                    </div>
+                    <i class="fa-solid fa-ellipsis" style="margin-left: auto;"></i>
                 </div>
-                <i class="fa-solid fa-ellipsis" style="margin-left: auto;"></i>
-            </div>
+            </a>
+            {% endif %}
         </header>
 
         <main class="feed">

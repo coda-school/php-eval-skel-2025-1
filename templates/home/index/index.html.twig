@@ -25,15 +25,22 @@
 
     {% for tweet in tweets %}
         <div class="post">
-            <img src="https://i.pravatar.cc/100?u={{ tweet.createdBy.id|default('default') }}" alt="Avatar" class="avatar">
+            <a href="{{ path('app_profile_show', {'id': tweet.createdBy.id}) }}">
+                <img src="https://i.pravatar.cc/100?u={{ tweet.createdBy.id|default('default') }}" alt="Avatar" class="avatar">
+            </a>
             <div class="post-content">
                 <div class="post-header">
-                    <span class="name">{{ tweet.createdBy.username|default('Anonyme') }}</span>
+                    <a href="{{ path('app_profile_show', {'id': tweet.createdBy.id}) }}" class="profile-link">
+                        <span class="name">{{ tweet.createdBy.username|default('Anonyme') }}</span>
+                    </a>
                     <span class="handle">@{{ tweet.createdBy.username|default('anonyme')|lower }} • {{ tweet.createdDate|date('d/m H:i') }}</span>
                 </div>
                 <p class="text">{{ tweet.content }}</p>
                 <div class="post-footer">
-                    <span><i class="fa-regular fa-comment"></i> 0</span>
+                    <span>
+                        <i class="fa-regular fa-comment"></i> 
+                        {{ commentService is defined ? commentService.findCommentsByTweetId(tweet.id)|length : 0 }}
+                    </span>
                     <span><i class="fa-solid fa-retweet"></i> 0</span>
                     <a href="{{ path('tweet_like', {'id': tweet.id}) }}" class="like-link">
                         <span>

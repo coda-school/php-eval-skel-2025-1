@@ -1,20 +1,79 @@
-{% extends 'base.html.twig' %}
+{% extends '_layouts/in_app.html.twig' %}
 
-{% block title %}Hello Profile/ShowController!{% endblock %}
+{% block title %}Profil de {{ user.username }} - X Clone{% endblock %}
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+{% block content %}
+    <div class="feed-header">
+        <div style="display: flex; align-items: center; gap: 20px; padding: 0 15px;">
+            <a href="{{ path('app_home_index') }}" style="color: white;"><i class="fa-solid fa-arrow-left"></i></a>
+            <div>
+                <h2 style="margin: 0;">{{ user.username }}</h2>
+                <span class="handle" style="font-size: 13px; color: #71767b;">{{ tweets|length }} posts</span>
+            </div>
+        </div>
+    </div>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <div class="profile-banner" style="height: 200px; background-color: #333639;"></div>
+    
+    <div class="profile-info" style="padding: 15px; position: relative; border-bottom: 1px solid #2f3336;">
+        <img src="https://i.pravatar.cc/150?u={{ user.id }}" alt="Avatar" class="avatar" style="width: 133px; height: 133px; border: 4px solid #000; position: absolute; top: -66px; left: 15px; border-radius: 50%;">
+        
+        <div style="text-align: right; height: 40px;">
+            {% if app.user and app.user.id == user.id %}
+                <button class="post-btn-small" style="background: transparent; border: 1px solid #536471; color: white;">Éditer le profil</button>
+            {% else %}
+                <button class="post-btn-small">Suivre</button>
+            {% endif %}
+        </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/app/src/Controller/Profile/ShowController.php</code></li>
-        <li>Your template at <code>/app/templates/profile/show/index.html.twig</code></li>
-    </ul>
-</div>
+        <div style="margin-top: 20px;">
+            <h2 style="margin: 0;">{{ user.username }}</h2>
+            <span class="handle" style="color: #71767b;">@{{ user.username|lower }}</span>
+        </div>
+
+        <p style="margin: 15px 0; color: white;">{{ user.bio|default('Pas de bio disponible.') }}</p>
+
+        <div style="display: flex; gap: 20px; color: #71767b; font-size: 14px;">
+            <span><strong style="color: white;">0</strong> Abonnements</span>
+            <span><strong style="color: white;">0</strong> Abonnés</span>
+        </div>
+    </div>
+
+    <div class="profile-tabs" style="display: flex; border-bottom: 1px solid #2f3336;">
+        <div style="flex: 1; text-align: center; padding: 15px; border-bottom: 4px solid #1d9bf0; font-weight: bold;">Posts</div>
+        <div style="flex: 1; text-align: center; padding: 15px; color: #71767b;">Réponses</div>
+        <div style="flex: 1; text-align: center; padding: 15px; color: #71767b;">Médias</div>
+        <div style="flex: 1; text-align: center; padding: 15px; color: #71767b;">J'aime</div>
+    </div>
+
+    {% for tweet in tweets %}
+        <div class="post">
+            <img src="https://i.pravatar.cc/100?u={{ tweet.createdBy.id|default('default') }}" alt="Avatar" class="avatar">
+            <div class="post-content">
+                <div class="post-header">
+                    <span class="name">{{ tweet.createdBy.username|default('Anonyme') }}</span>
+                    <span class="handle">@{{ tweet.createdBy.username|default('anonyme')|lower }} • {{ tweet.createdDate|date('d/m H:i') }}</span>
+                </div>
+                <p class="text">{{ tweet.content }}</p>
+                <div class="post-footer">
+                    <span>
+                        <i class="fa-regular fa-comment"></i> 
+                        {{ commentService.findCommentsByTweetId(tweet.id)|length }}
+                    </span>
+                    <span><i class="fa-solid fa-retweet"></i> 0</span>
+                    <a href="{{ path('tweet_like', {'id': tweet.id}) }}" class="like-link">
+                        <span>
+                            <i class="fa-{{ likeService.countLikesByTweetId(tweet.id) > 0 ? 'solid' : 'regular' }} fa-heart"></i> 
+                            {{ likeService.countLikesByTweetId(tweet.id) }}
+                        </span>
+                    </a>
+                    <span><i class="fa-solid fa-chart-simple"></i> 0</span>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="post">
+            <p class="text" style="text-align: center; padding: 40px; color: #71767b;">Cet utilisateur n'a pas encore posté de tweets.</p>
+        </div>
+    {% endfor %}
 {% endblock %}
