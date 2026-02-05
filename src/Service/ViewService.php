@@ -22,4 +22,17 @@ readonly class ViewService
     {
         return $this->viewRepository->countViewsOfTweetsByUserId($userId);
     }
+
+    public function addView(int $tweetId, ?\App\Entity\User $user, \Doctrine\ORM\EntityManagerInterface $entityManager): void
+    {
+        $view = new \App\Entity\View();
+        $view->setTweetId($tweetId);
+        if ($user) {
+            $view->setUserId($user->getId());
+            $view->setCreatedBy($user);
+        }
+        $view->setCreatedDate(new \DateTime());
+        $entityManager->persist($view);
+        $entityManager->flush();
+    }
 }

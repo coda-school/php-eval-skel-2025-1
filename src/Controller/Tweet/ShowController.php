@@ -7,6 +7,7 @@ use App\Service\LikeService;
 use App\Service\TweetService;
 use App\Service\UserService;
 use App\Service\ViewService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -21,10 +22,18 @@ final class ShowController extends AbstractController
         CommentService $commentService,
         UserService    $userService,
         TweetService   $tweetService,
+        EntityManagerInterface $entityManager,
                        $id,
     ): Response
     {
         $tweet = $tweetService->findTweetById($id);
+        if (!$tweet) {
+            throw $this->createNotFoundException('Tweet non trouvé');
+        }
+
+        // Appel du service pour enregistrer une nouvelle vue
+        $viewService->addView($id, $this->getUser(), $entityManager);
+
         $author = $userService->findUserByTweetId($id);
         $nbLikes = $likeService->countLikesByTweetId($id);
         $nbViews = $viewService->countViewsByTweetId($id);
