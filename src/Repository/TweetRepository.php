@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Follow;
 use App\Entity\Tweet;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -40,12 +41,12 @@ class TweetRepository extends ServiceEntityRepository
 
         return $this->createQueryBuilder('t')
             ->select('t')
-            ->innerJoin('App/Entity/Follow', 'f', 'WITH', 't.createdBy = f.following')
-            ->where('f.follower = :userId')
-            ->andWhere('t.is_deleted = false')
-            ->andWhere('f.is_deleted = false')
+            ->innerJoin(Follow::class, 'f', 'WITH', 't.createdBy = f.following_id')
+            ->where('f.follower_id = :userId')
+            ->andWhere('t.isDeleted = false')
+            ->andWhere('f.isDeleted = false')
             ->setParameter('userId', $userId)
-            ->orderBy('t.createdAt', 'DESC')
+            ->orderBy('t.createdDate', 'DESC')
             ->setFirstResult($offset)
             ->setMaxResults($limit)
             ->getQuery()
