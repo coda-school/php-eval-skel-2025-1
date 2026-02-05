@@ -23,7 +23,7 @@ final class LikeController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response
     {
-        $tweet = $tweetService->findById($id);
+        $tweet = $tweetService->findTweetById($id);
         if (!$tweet) {
             throw $this->createNotFoundException('Tweet non trouvé');
         }

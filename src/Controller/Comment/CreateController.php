@@ -20,9 +20,13 @@ final class CreateController extends AbstractController
     }
 
     #[Route('/comment/create/{tweetId}', name: 'app_comment_create', methods: ['GET', 'POST'])]
-    public function index(int $tweetId, Request $request): Response
+    public function index
+    (
+        int $tweetId,
+        Request $request
+    ): Response
     {
-        $tweet = $this->tweetService->findById($tweetId);
+        $tweet = $this->tweetService->findTweetById($tweetId);
 
         if (!$tweet) {
             throw $this->createNotFoundException('Le tweet n\'existe pas.');

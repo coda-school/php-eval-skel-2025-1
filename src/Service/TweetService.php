@@ -19,23 +19,13 @@ readonly class TweetService
         return $this->tweetRepository->findTweetsByUserId($userId);
     }
 
-    public function findTweetById(int $tweetId): Tweet
+    public function findTweetById(int $tweetId): ?Tweet
     {
         return $this->tweetRepository->findTweetById($tweetId);
     }
 
-    public function findFollowTimelineByUserId(int $userId): array
+    public function findFollowTimelineByUserId(int $userId, int $page, int $limit): array
     {
-        return $this->tweetRepository->findFollowTimelineByUserId($userId);
-    }
-
-    public function findAll(): array
-    {
-        return $this->tweetRepository->findAllTweets();
-    }
-
-    public function findById(int $id): ?Tweet
-    {
-        return $this->tweetRepository->find($id);
+        return $this->tweetRepository->findFollowTimelineByUserId($userId, $page, $limit);
     }
 }

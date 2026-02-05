@@ -34,18 +34,20 @@ class TweetRepository extends ServiceEntityRepository
     /**
      * Récupère les derniers tweets des comptes suivis par un utilisateur
      */
-    public function findFollowTimelineByUserId(int $userId): array
+    public function findFollowTimelineByUserId(int $userId, int $page, int $limit): array
     {
+        $offset = ($page - 1) * $limit;
+
         return $this->createQueryBuilder('t')
             ->select('t')
-            ->from('Tweet', 't')
-            ->innerJoin('App\Entity\Follow', 'f', 'WITH', 't.createdBy = f.following')
+            ->innerJoin('Follow', 'f', 'WITH', 't.createdBy = f.following')
             ->where('f.follower = :userId')
             ->andWhere('t.is_deleted = false')
             ->andWhere('f.is_deleted = false')
             ->setParameter('userId', $userId)
             ->orderBy('t.createdAt', 'DESC')
-            ->setMaxResults(20)
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
     }
@@ -56,15 +58,6 @@ class TweetRepository extends ServiceEntityRepository
             ->select('t')
             ->where('t.id = :tweetId')
             ->setParameter('tweetId', $tweetId)
-            ->getQuery()
-            ->getResult();
-    }
-    public function findAllTweets(): array
-    {
-        return $this->createQueryBuilder('t')
-            ->select('t')
-            ->where('t.isDeleted = false')
-            ->orderBy('t.createdDate', 'DESC')
             ->getQuery()
             ->getResult();
     }
