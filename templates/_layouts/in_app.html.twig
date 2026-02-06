@@ -11,7 +11,7 @@
                 <a href="{{ path('home') }}" class="active"><i class="fa-solid fa-house"></i> <span>Accueil</span></a>
                 <a href="#"><i class="fa-solid fa-magnifying-glass"></i> <span>Explorer</span></a>
                 <a href="#"><i class="fa-regular fa-bell"></i> <span>Notifications</span></a>
-                <a href="#"><i class="fa-regular fa-envelope"></i> <span>Messages</span></a>
+                <a href="{{ path('profile', {'id': app.user.id}) }}"><i class="fa-regular fa-envelope"></i> <span>Messages</span></a>
 
                 {% if app.user %}
                     <a href="{{ path('profile', {'id': app.user.id}) }}">

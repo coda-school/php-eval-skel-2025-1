@@ -1,7 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <div class="container" style="justify-content: center; align-items: center;">
+        <main style="width: 100%; max-width: 450px; padding: 20px;">
 
-	{% block content %}{% endblock %}
+            <div style="text-align: center; margin-bottom: 30px;">
+                <img src="{{ asset('image.png') }}" alt="Logo" class="funny-logo">
+            </div>
 
+            {% block content %}{% endblock %}
+        </main>
+    </div>
 {% endblock %}

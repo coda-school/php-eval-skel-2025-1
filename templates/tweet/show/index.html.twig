@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends '_layouts/in_app.html.twig' %}
 
 {% block title %}Tweet de {{ author.username }}{% endblock %}
 
@@ -9,9 +9,9 @@
             <h5 class="card-title">@{{ author.username }}</h5>
             <p class="card-text">{{ tweet.content }}</p>
             <div class="text-muted small">
-                {{ tweet.createdDate|date('d/m/Y H:i') }} | 
-                {{ likes }} Likes | 
-                {{ views }} Vues | 
+                {{ tweet.createdDate|date('d/m/Y H:i') }} |
+                {{ likes }} Likes |
+                {{ views }} Vues |
                 {{ nbComments }} Commentaires
             </div>
         </div>
@@ -20,7 +20,7 @@
     <hr>
 
     <h3>Commentaires</h3>
-    
+
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         <div class="mb-4">
             <a href="{{ path('app_comment_create', {'tweetId': tweet.id}) }}" class="btn btn-primary">Ajouter un commentaire</a>
@@ -35,7 +35,7 @@
                     <small>{{ comment.createdDate|date('d/m/Y H:i') }}</small>
                 </div>
                 <p class="mb-1">{{ comment.content }}</p>
-                
+
                 {% if is_granted('IS_AUTHENTICATED_FULLY') and comment.createdBy == app.user %}
                     <div class="mt-2">
                         <form action="{{ path('app_comment_delete', {'id': comment.id}) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer ce commentaire ?');" style="display: inline;">

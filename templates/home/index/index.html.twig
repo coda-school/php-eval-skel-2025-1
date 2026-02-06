@@ -33,9 +33,9 @@
             <div class="post-content">
                 <div class="post-header">
                     <a href="{{ path('profile', {'id': tweet.createdBy.id}) }}" class="profile-link">
-                        <span class="name">{{ tweet.createdBy.username|default('Anonyme') }}</span>
+                        <span class="name">{{ tweet.createdBy.username }}</span>
                     </a>
-                    <span class="handle">@{{ tweet.createdBy.username|default('anonyme')|lower }} • {{ tweet.ago }}</span>
+                    <span class="handle">@{{ tweet.createdBy.username|lower }} • {{ tweet.ago }}</span>
                 </div>
                 <p class="text">{{ tweet.content }}</p>
                 <div class="post-footer">
