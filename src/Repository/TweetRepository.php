@@ -27,7 +27,7 @@ class TweetRepository extends ServiceEntityRepository
             ->where('t.createdBy = :userID')
             ->andWhere('t.isDeleted = false')
             ->setParameter('userID', $userID)
-            ->orderBy('t.createdAt', 'DESC')
+            ->orderBy('t.createdDate', 'DESC')
             ->getQuery()
             ->getResult();
     }

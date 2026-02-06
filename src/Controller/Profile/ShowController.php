@@ -2,14 +2,15 @@
 
 namespace App\Controller\Profile;
 
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class ShowController extends AbstractController
 {
-    #[Route('/profile/show/{id}', name: 'app_profile_show')]
-    public function index(int $id, \App\Repository\UserRepository $userRepository, \App\Service\TweetService $tweetService, \App\Service\LikeService $likeService, \App\Service\CommentService $commentService): Response
+    #[Route('/profile/{id}', name: 'profile')]
+    public function index(int $id, UserRepository $userRepository, \App\Service\TweetService $tweetService, \App\Service\LikeService $likeService, \App\Service\CommentService $commentService): Response
     {
         $user = $userRepository->find($id);
         if (!$user) {

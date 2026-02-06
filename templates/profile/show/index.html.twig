@@ -5,7 +5,7 @@
 {% block content %}
     <div class="feed-header">
         <div style="display: flex; align-items: center; gap: 20px; padding: 0 15px;">
-            <a href="{{ path('app_home_index') }}" style="color: white;"><i class="fa-solid fa-arrow-left"></i></a>
+            <a href="{{ path('home') }}" style="color: white;"><i class="fa-solid fa-arrow-left"></i></a>
             <div>
                 <h2 style="margin: 0;">{{ user.username }}</h2>
                 <span class="handle" style="font-size: 13px; color: #71767b;">{{ tweets|length }} posts</span>
@@ -14,10 +14,10 @@
     </div>
 
     <div class="profile-banner" style="height: 200px; background-color: #333639;"></div>
-    
+
     <div class="profile-info" style="padding: 15px; position: relative; border-bottom: 1px solid #2f3336;">
         <img src="https://i.pravatar.cc/150?u={{ user.id }}" alt="Avatar" class="avatar" style="width: 133px; height: 133px; border: 4px solid #000; position: absolute; top: -66px; left: 15px; border-radius: 50%;">
-        
+
         <div style="text-align: right; height: 40px;">
             {% if app.user and app.user.id == user.id %}
                 <button class="post-btn-small" style="background: transparent; border: 1px solid #536471; color: white;">Éditer le profil</button>
@@ -57,16 +57,16 @@
                 <p class="text">{{ tweet.content }}</p>
                 <div class="post-footer">
                     <span>
-                        <i class="fa-regular fa-comment"></i> 
+                        <i class="fa-regular fa-comment"></i>
                         {{ commentService.findCommentsByTweetId(tweet.id)|length }}
                     </span>
                     <span><i class="fa-solid fa-retweet"></i> 0</span>
-                    <a href="{{ path('tweet_like', {'id': tweet.id}) }}" class="like-link">
-                        <span>
-                            <i class="fa-{{ likeService.countLikesByTweetId(tweet.id) > 0 ? 'solid' : 'regular' }} fa-heart"></i> 
-                            {{ likeService.countLikesByTweetId(tweet.id) }}
-                        </span>
-                    </a>
+{#                    <a href="{{ path('tweet_like', {'id': tweet.id}) }}" class="like-link">#}
+{#                        <span>#}
+{#                            <i class="fa-{{ likeService.countLikesByTweetId(tweet.id) > 0 ? 'solid' : 'regular' }} fa-heart"></i>#}
+{#                            {{ likeService.countLikesByTweetId(tweet.id) }}#}
+{#                        </span>#}
+{#                    </a>#}
                     <span><i class="fa-solid fa-chart-simple"></i> 0</span>
                 </div>
             </div>

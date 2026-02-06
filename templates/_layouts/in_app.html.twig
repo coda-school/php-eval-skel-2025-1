@@ -6,28 +6,34 @@
             <div class="logo">
                 <img src="{{ asset('image.png') }}" alt="Logo" class="funny-logo">
             </div>
-            
+
             <nav>
-                <a href="#" class="active"><i class="fa-solid fa-house"></i> <span>Accueil</span></a>
+                <a href="{{ path('home') }}" class="active"><i class="fa-solid fa-house"></i> <span>Accueil</span></a>
                 <a href="#"><i class="fa-solid fa-magnifying-glass"></i> <span>Explorer</span></a>
                 <a href="#"><i class="fa-regular fa-bell"></i> <span>Notifications</span></a>
                 <a href="#"><i class="fa-regular fa-envelope"></i> <span>Messages</span></a>
-                <a href="#"><i class="fa-regular fa-user"></i> <span>Profil</span></a>
+
+                {% if app.user %}
+                    <a href="{{ path('profile', {'id': app.user.id}) }}">
+                        <i class="fa-regular fa-user"></i> <span>Profil</span>
+                    </a>
+                {% endif %}
             </nav>
 
-            <button class="tweet-btn">Poster</button>
+            <a href="{{ path('app_tweet_create') }}" class="tweet-btn">Poster</a>
 
             {% if app.user %}
-            <a href="{{ path('app_profile_show', {'id': app.user.id}) }}" class="user-profile-link">
-                <div class="user-profile">
-                    <img src="{{ asset('pdp.jpg') }}" alt="Mon profil" class="avatar">
-                    <div class="user-info">
-                        <span class="name">{{ app.user.username }}</span>
-                        <span class="handle">@{{ app.user.username|lower }}</span>
+                <a href="{{ path('profile', {'id': app.user.id}) }}" class="user-profile-link">
+                    <div class="user-profile">
+                        <img src="{{ app.user.avatar ? asset(app.user.avatar) : asset('pdp.jpg') }}" alt="Mon profil" class="avatar">
+
+                        <div class="user-info">
+                            <span class="name">{{ app.user.username }}</span>
+                            <span class="handle">@{{ app.user.username|lower }}</span>
+                        </div>
+                        <i class="fa-solid fa-ellipsis" style="margin-left: auto;"></i>
                     </div>
-                    <i class="fa-solid fa-ellipsis" style="margin-left: auto;"></i>
-                </div>
-            </a>
+                </a>
             {% endif %}
         </header>
 
