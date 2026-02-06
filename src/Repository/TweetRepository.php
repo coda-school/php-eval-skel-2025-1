@@ -39,13 +39,9 @@ class TweetRepository extends ServiceEntityRepository
     {
         $offset = ($page - 1) * $limit;
 
+        // On récupère tous les tweets non supprimés pour l'accueil
         return $this->createQueryBuilder('t')
-            ->select('t')
-            ->innerJoin(Follow::class, 'f', 'WITH', 't.createdBy = f.following_id')
-            ->where('f.follower_id = :userId')
-            ->andWhere('t.isDeleted = false')
-            ->andWhere('f.isDeleted = false')
-            ->setParameter('userId', $userId)
+            ->where('t.isDeleted = false')
             ->orderBy('t.createdDate', 'DESC')
             ->setFirstResult($offset)
             ->setMaxResults($limit)
