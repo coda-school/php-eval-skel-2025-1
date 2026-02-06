@@ -60,6 +60,6 @@ class TweetRepository extends ServiceEntityRepository
             ->where('t.id = :tweetId')
             ->setParameter('tweetId', $tweetId)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
     }
 }
