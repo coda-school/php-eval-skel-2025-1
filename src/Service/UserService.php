@@ -19,4 +19,9 @@ readonly class UserService
     {
         return $this->userRepository->findUserByTweetId($tweetId);
     }
+
+    public function findSuggestions(int $currentUserId, int $limit = 3): array
+    {
+        return $this->userRepository->findSuggestions($currentUserId, $limit);
+    }
 }

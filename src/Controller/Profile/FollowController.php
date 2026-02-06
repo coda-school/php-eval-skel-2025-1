@@ -8,11 +8,10 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class FollowController extends AbstractController
 {
-    #[Route('/profile/follow', name: 'app_profile_follow')]
-    public function index(): Response
+    #[Route('/profile/follow/{id}', name: 'app_profile_follow')]
+    public function index(int $id): Response
     {
-        return $this->render('profile/follow/index.html.twig', [
-            'controller_name' => 'Profile/FollowController',
-        ]);
+        // Logique de follow à implémenter ici si nécessaire
+        return $this->redirectToRoute('app_home_index');
     }
 }

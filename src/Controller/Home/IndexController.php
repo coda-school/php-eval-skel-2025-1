@@ -4,6 +4,7 @@ namespace App\Controller\Home;
 
 use App\Service\TweetService;
 use App\Service\LikeService;
+use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
@@ -16,6 +17,7 @@ final class IndexController extends AbstractController
     (
         TweetService $tweetService,
         LikeService $likeService,
+        UserService $userService,
 
         #[MapQueryParameter]
         int $page = 1,
@@ -31,16 +33,23 @@ final class IndexController extends AbstractController
 
         $tweets = $tweetService->findFollowTimelineByUserId($user->getId(), $page, 10);
         $nbTwets = count($tweets);
-        if ($tweets <= $limit) {
-            $maxPaginationPage = 1;
-        } elseif ($nbTwets <= 10 * $limit) {
-            $maxPaginationPage = ceil($nbTwets / $limit);
+        $maxPaginationPage = 1;
+        if ($nbTwets > 0) {
+            if ($nbTwets <= $limit) {
+                $maxPaginationPage = 1;
+            } elseif ($nbTwets <= 10 * $limit) {
+                $maxPaginationPage = ceil($nbTwets / $limit);
+            }
         }
+
+        $suggestions = $userService->findSuggestions($user->getId());
 
         return $this->render('home/index/index.html.twig', [
             'tweets' => $tweets,
+            'currentPage' => $page,
             'maxPaginationPage' => $maxPaginationPage,
             'likeService' => $likeService,
+            'suggestions' => $suggestions,
         ]);
     }
 }

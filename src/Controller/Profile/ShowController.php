@@ -1,29 +1,58 @@
 <?php
 
-namespace App\Controller\Profile;
+namespace App\Controller\Home;
 
-use App\Repository\UserRepository;
+use App\Service\TweetService;
+use App\Service\LikeService;
+use App\Service\UserService;
+use App\Service\CommentService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class ShowController extends AbstractController
+final class IndexController extends AbstractController
 {
-    #[Route('/profile/{id}', name: 'profile')]
-    public function index(int $id, UserRepository $userRepository, \App\Service\TweetService $tweetService, \App\Service\LikeService $likeService, \App\Service\CommentService $commentService): Response
+    #[Route('/', name: 'app_home_index', methods: ['GET'])]
+    public function index
+    (
+        TweetService $tweetService,
+        LikeService $likeService,
+        UserService $userService,
+        CommentService $commentService,
+
+        #[MapQueryParameter]
+        int $page = 1,
+
+        #[MapQueryParameter]
+        int $limit = 10,
+    ): Response
     {
-        $user = $userRepository->find($id);
+        $user = $this->getUser();
         if (!$user) {
-            throw $this->createNotFoundException('Utilisateur non trouvé');
+            return $this->redirectToRoute('app_login');
         }
 
-        $tweets = $tweetService->findTweetsByUserId($id);
+        $tweets = $tweetService->findFollowTimelineByUserId($user->getId(), $page, 10);
+        $nbTwets = count($tweets);
+        $maxPaginationPage = 1;
+        if ($nbTwets > 0) {
+            if ($nbTwets <= $limit) {
+                $maxPaginationPage = 1;
+            } elseif ($nbTwets <= 10 * $limit) {
+                $maxPaginationPage = ceil($nbTwets / $limit);
+            }
+        }
 
-        return $this->render('profile/show/index.html.twig', [
-            'user' => $user,
+        $suggestions = $userService->findSuggestions($user->getId());
+
+        return $this->render('home/index/index.html.twig', [
             'tweets' => $tweets,
+            'currentPage' => $page,
+            'maxPaginationPage' => $maxPaginationPage,
             'likeService' => $likeService,
             'commentService' => $commentService,
+            'suggestions' => $suggestions,
         ]);
     }
 }

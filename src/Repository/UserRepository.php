@@ -31,4 +31,17 @@ class UserRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    /**
+     * Récupère des suggestions d'utilisateurs à suivre
+     */
+    public function findSuggestions(int $currentUserId, int $limit = 3): array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.id != :currentUserId')
+            ->setParameter('currentUserId', $currentUserId)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
 }

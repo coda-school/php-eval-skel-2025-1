@@ -59,4 +59,15 @@
             <p class="text">Aucun tweet ? Suivez des gens pour commencer !</p>
         </div>
     {% endfor %}
+
+    <div class="pagination" style="display: flex; justify-content: center; gap: 20px; margin: 20px 0; padding: 10px;">
+        {% if currentPage > 1 %}
+            <a href="?page={{ currentPage - 1 }}" class="post-btn-small" style="text-decoration: none;">Précédent</a>
+        {% endif %}
+        
+        {# On affiche le bouton suivant s'il y a des tweets sur la page actuelle (potentiellement une page suivante) #}
+        {% if tweets|length >= 10 %}
+            <a href="?page={{ currentPage + 1 }}" class="post-btn-small" style="text-decoration: none;">Suivant</a>
+        {% endif %}
+    </div>
 {% endblock %}
