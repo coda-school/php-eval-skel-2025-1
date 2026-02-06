@@ -56,13 +56,13 @@
                         <div style="display: flex; align-items: center;">
                             <img src="https://i.pravatar.cc/100?u={{ suggestion.id }}" alt="Avatar" class="avatar" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
                             <div style="display: flex; flex-direction: column;">
-                                <a href="{{ path('app_profile_show', {'id': suggestion.id}) }}" style="text-decoration: none; color: inherit; font-weight: bold;">
+                                <a href="{{ path('profile', {'id': suggestion.id}) }}" style="text-decoration: none; color: inherit; font-weight: bold;">
                                     {{ suggestion.username }}
                                 </a>
                                 <span style="font-size: 0.8em; color: #657786;">@{{ suggestion.username|lower }}</span>
                             </div>
                         </div>
-                        <a href="{{ path('app_profile_follow', {'id': suggestion.id}) }}" class="post-btn-small" style="text-decoration: none; padding: 5px 15px; font-size: 0.9em;">Suivre</a>
+                        <a href="{{ path('profile', {'id': suggestion.id}) }}" class="post-btn-small" style="text-decoration: none; padding: 5px 15px; font-size: 0.9em;">Suivre</a>
                     </div>
                 {% endfor %}
             </div>
