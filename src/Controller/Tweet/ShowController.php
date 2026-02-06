@@ -47,6 +47,7 @@ final class ShowController extends AbstractController
             'likes' => $nbLikes,
             'views' => $nbViews,
             'listComments' => $listComments,
+            'likeService' => $likeService,
         ]);
     }
 }

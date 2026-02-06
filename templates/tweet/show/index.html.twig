@@ -1,52 +1,94 @@
 {% extends '_layouts/in_app.html.twig' %}
 
-{% block title %}Tweet de {{ author.username }}{% endblock %}
+{% block title %}Tweet de {{ author.username }} - X Clone{% endblock %}
 
-{% block body %}
-<div class="container mt-4">
-    <div class="card mb-4">
-        <div class="card-body">
-            <h5 class="card-title">@{{ author.username }}</h5>
-            <p class="card-text">{{ tweet.content }}</p>
-            <div class="text-muted small">
-                {{ tweet.createdDate|date('d/m/Y H:i') }} |
-                {{ likes }} Likes |
-                {{ views }} Vues |
-                {{ nbComments }} Commentaires
-            </div>
+{% block content %}
+    <div class="feed-header">
+        <div style="display: flex; align-items: center; gap: 20px; padding: 0 15px;">
+            <a href="{{ path('app_home_index') }}" style="color: white;"><i class="fa-solid fa-arrow-left"></i></a>
+            <h2 style="margin: 0;">Post</h2>
         </div>
     </div>
 
-    <hr>
+    <div class="post-detail" style="padding: 15px; border-bottom: 1px solid #2f3336;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px;">
+            <a href="{{ path('app_profile_show', {'id': author.id}) }}">
+                <img src="https://i.pravatar.cc/100?u={{ author.id }}" alt="Avatar" class="avatar" style="width: 48px; height: 48px;">
+            </a>
+            <div style="display: flex; flex-direction: column;">
+                <a href="{{ path('app_profile_show', {'id': author.id}) }}" style="font-weight: bold; text-decoration: none; color: white;">
+                    {{ author.username }}
+                </a>
+                <span style="color: #71767b;">@{{ author.username|lower }}</span>
+            </div>
+        </div>
 
-    <h3>Commentaires</h3>
+        <div style="font-size: 22px; line-height: 1.3; margin-bottom: 15px; color: white; word-wrap: break-word;">
+            {{ tweet.content }}
+        </div>
+
+        <div style="color: #71767b; padding: 15px 0; border-bottom: 1px solid #2f3336; font-size: 15px;">
+            {{ tweet.createdDate|date('H:i · d M Y') }} · <strong style="color: white;">{{ views }}</strong> Vues
+        </div>
+
+        <div style="padding: 15px 0; border-bottom: 1px solid #2f3336; display: flex; gap: 20px; font-size: 15px;">
+            <span><strong style="color: white;">{{ nbComments }}</strong> Commentaires</span>
+            <span><strong style="color: white;">0</strong> Retweets</span>
+            <span><strong style="color: white;">{{ likes }}</strong> J'aime</span>
+        </div>
+
+        <div class="post-footer" style="padding: 10px 0; display: flex; justify-content: space-around; border-bottom: 1px solid #2f3336;">
+            <a href="{{ path('app_comment_create', {'tweetId': tweet.id}) }}" style="color: #71767b; font-size: 20px;"><i class="fa-regular fa-comment"></i></a>
+            <span style="color: #71767b; font-size: 20px;"><i class="fa-solid fa-retweet"></i></span>
+            <a href="{{ path('tweet_like', {'id': tweet.id}) }}" style="color: {{ likeService.countLikesByTweetId(tweet.id) > 0 ? '#f91880' : '#71767b' }}; font-size: 20px;">
+                <i class="fa-{{ likeService.countLikesByTweetId(tweet.id) > 0 ? 'solid' : 'regular' }} fa-heart"></i>
+            </a>
+            <span style="color: #71767b; font-size: 20px;"><i class="fa-solid fa-chart-simple"></i></span>
+        </div>
+    </div>
 
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        <div class="mb-4">
-            <a href="{{ path('app_comment_create', {'tweetId': tweet.id}) }}" class="btn btn-primary">Ajouter un commentaire</a>
+        <div style="padding: 15px; border-bottom: 1px solid #2f3336; display: flex; gap: 12px; align-items: center;">
+            <img src="https://i.pravatar.cc/100?u={{ app.user.id }}" alt="Mon profil" class="avatar" style="width: 40px; height: 40px;">
+            <a href="{{ path('app_comment_create', {'tweetId': tweet.id}) }}" style="flex: 1; color: #71767b; text-decoration: none; font-size: 20px;">Poster votre réponse</a>
+            <a href="{{ path('app_comment_create', {'tweetId': tweet.id}) }}" class="post-btn-small" style="text-decoration: none;">Répondre</a>
         </div>
     {% endif %}
 
-    <div class="list-group">
+    <div class="comments-section">
         {% for comment in listComments %}
-            <div class="list-group-item">
-                <div class="d-flex w-100 justify-content-between">
-                    <h6 class="mb-1">@{{ comment.createdBy.username }}</h6>
-                    <small>{{ comment.createdDate|date('d/m/Y H:i') }}</small>
-                </div>
-                <p class="mb-1">{{ comment.content }}</p>
-
-                {% if is_granted('IS_AUTHENTICATED_FULLY') and comment.createdBy == app.user %}
-                    <div class="mt-2">
-                        <form action="{{ path('app_comment_delete', {'id': comment.id}) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer ce commentaire ?');" style="display: inline;">
-                            <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
-                        </form>
+            <div class="post" style="border-bottom: 1px solid #2f3336; padding: 15px; display: flex; gap: 12px;">
+                <a href="{{ path('app_profile_show', {'id': comment.createdBy.id}) }}">
+                    <img src="https://i.pravatar.cc/100?u={{ comment.createdBy.id }}" alt="Avatar" class="avatar" style="width: 40px; height: 40px;">
+                </a>
+                <div style="flex: 1;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <div>
+                            <a href="{{ path('app_profile_show', {'id': comment.createdBy.id}) }}" style="font-weight: bold; text-decoration: none; color: white;">
+                                {{ comment.createdBy.username }}
+                            </a>
+                            <span style="color: #71767b;">@{{ comment.createdBy.username|lower }} · {{ comment.createdDate|date('d/m') }}</span>
+                        </div>
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') and comment.createdBy == app.user %}
+                            <form action="{{ path('app_comment_delete', {'id': comment.id}) }}" method="POST" onsubmit="return confirm('Supprimer ce commentaire ?');">
+                                <button type="submit" style="background: transparent; border: none; color: #f4212e; cursor: pointer;"><i class="fa-regular fa-trash-can"></i></button>
+                            </form>
+                        {% endif %}
                     </div>
-                {% endif %}
+                    <div style="margin-top: 5px; color: white; line-height: 1.4;">
+                        {{ comment.content }}
+                    </div>
+                    <div class="post-footer" style="margin-top: 10px; display: flex; justify-content: space-between; max-width: 300px; color: #71767b;">
+                        <span><i class="fa-regular fa-comment"></i> 0</span>
+                        <span><i class="fa-solid fa-retweet"></i> 0</span>
+                        <span><i class="fa-regular fa-heart"></i> 0</span>
+                    </div>
+                </div>
             </div>
         {% else %}
-            <p>Aucun commentaire pour le moment.</p>
+            <div style="padding: 40px; text-align: center; color: #71767b;">
+                Aucun commentaire pour le moment.
+            </div>
         {% endfor %}
     </div>
-</div>
 {% endblock %}

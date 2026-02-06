@@ -20,7 +20,8 @@ final class LikeController extends AbstractController
     (
         int $id,
         TweetService $tweetService,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        \Symfony\Component\HttpFoundation\Request $request
     ): Response
     {
         $tweet = $tweetService->findTweetById($id);
@@ -54,6 +55,14 @@ final class LikeController extends AbstractController
         }
         $entityManager->flush();
 
+
         return $this->redirectToRoute('home');
+
+        $referer = $request->headers->get('referer');
+        if ($referer) {
+            return $this->redirect($referer);
+        }
+
+        return $this->redirectToRoute('app_home_index');
     }
 }

@@ -11,9 +11,7 @@
     <div class="create-post">
          <img src="{{ asset('pdp.jpg') }}" alt="Mon profil" class="avatar">
         <div class="input-area">
-            <label>
-                <input type="text" placeholder="Quoi de neuf ?">
-            </label>
+            <input type="text" placeholder="Quoi de neuf ?">
             <div class="actions">
                 <div class="icons">
                     <i class="fa-regular fa-image"></i>
@@ -26,31 +24,33 @@
     </div>
 
     {% for tweet in tweets %}
-        <div class="post">
-            <a href="{{ path('profile', {'id': tweet.createdBy.id}) }}">
+        <div class="post" onclick="window.location.href='{{ path('app_tweet_show', {'id': tweet.id}) }}'">
+            <a href="{{ path('app_profile_show', {'id': tweet.createdBy.id}) }}" onclick="event.stopPropagation();">
                 <img src="https://i.pravatar.cc/100?u={{ tweet.createdBy.id|default('default') }}" alt="Avatar" class="avatar">
             </a>
             <div class="post-content">
                 <div class="post-header">
-                    <a href="{{ path('profile', {'id': tweet.createdBy.id}) }}" class="profile-link">
-                        <span class="name">{{ tweet.createdBy.username }}</span>
+                    <a href="{{ path('app_profile_show', {'id': tweet.createdBy.id}) }}" class="profile-link" onclick="event.stopPropagation();">
+                        <span class="name">{{ tweet.createdBy.username|default('Anonyme') }}</span>
                     </a>
-                    <span class="handle">@{{ tweet.createdBy.username|lower }} • {{ tweet.ago }}</span>
+                    <span class="handle">@{{ tweet.createdBy.username|default('anonyme')|lower }} • {{ tweet.ago }}</span>
                 </div>
                 <p class="text">{{ tweet.content }}</p>
                 <div class="post-footer">
-                    <span>
-                        <i class="fa-regular fa-comment"></i>
-                        {{ commentService is defined ? commentService.findCommentsByTweetId(tweet.id)|length : 0 }}
-                    </span>
-                    <span><i class="fa-solid fa-retweet"></i> 0</span>
-                    <a href="{{ path('tweet_like', {'id': tweet.id}) }}" class="like-link">
+                    <a href="{{ path('app_tweet_show', {'id': tweet.id}) }}" class="comment-link" onclick="event.stopPropagation();">
                         <span>
-                            <i class="fa-{{ likeService.countLikesByTweetId(tweet.id) > 0 ? 'solid' : 'regular' }} fa-heart"></i>
-                            {{ likeService.countLikesByTweetId(tweet.id) }}
+                            <i class="fa-regular fa-comment"></i> 
+                            {{ commentService is defined ? commentService.findCommentsByTweetId(tweet.id)|length : 0 }}
                         </span>
                     </a>
-                    <span><i class="fa-solid fa-chart-simple"></i> 0</span>
+                    <span onclick="event.stopPropagation();"><i class="fa-solid fa-retweet"></i> 0</span>
+                    <a href="{{ path('tweet_like', {'id': tweet.id}) }}" class="like-link" onclick="event.stopPropagation();">
+                        <span>
+                            <i class="fa-{{ likeService.countLikesByTweetId(tweet.id) > 0 ? 'solid' : 'regular' }} fa-heart"></i> 
+                            <span class="like-count">{{ likeService.countLikesByTweetId(tweet.id) }}</span>
+                        </span>
+                    </a>
+                    <span onclick="event.stopPropagation();"><i class="fa-solid fa-chart-simple"></i> 0</span>
                 </div>
             </div>
         </div>

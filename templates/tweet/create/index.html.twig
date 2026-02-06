@@ -1,20 +1,24 @@
 {% extends '_layouts/in_app.html.twig' %}
 
-{% block title %}Hello Tweet/CreateController!{% endblock %}
+{% block title %}Nouveau Tweet - X Clone{% endblock %}
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+{% block content %}
+    <div class="feed-header">
+        <div style="display: flex; align-items: center; gap: 20px; padding: 0 15px;">
+            <a href="{{ path('app_home_index') }}" style="color: white;"><i class="fa-solid fa-arrow-left"></i></a>
+            <h2 style="margin: 0;">Poster un tweet</h2>
+        </div>
+    </div>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/home/ethan/Documents/CODA/php/Projet Tweet Hub/php-eval-skel-2025-1/src/Controller/Tweet/CreateController.php</code></li>
-        <li>Your template at <code>/home/ethan/Documents/CODA/php/Projet Tweet Hub/php-eval-skel-2025-1/templates/tweet/create/index.html.twig</code></li>
-    </ul>
-</div>
+    <div style="padding: 20px;">
+        {{ form_start(form) }}
+            <div class="form-group" style="margin-bottom: 20px;">
+                {{ form_widget(form.content, {'attr': {'class': 'form-control', 'style': 'width: 100%; background: transparent; border: 1px solid #2f3336; color: white; padding: 15px; border-radius: 8px; font-size: 1.2em; min-height: 150px; resize: vertical;'}}) }}
+                {{ form_errors(form.content) }}
+            </div>
+            <div style="text-align: right;">
+                {{ form_widget(form.submit, {'attr': {'class': 'post-btn-small', 'style': 'padding: 10px 25px; font-size: 1em;'}}) }}
+            </div>
+        {{ form_end(form) }}
+    </div>
 {% endblock %}
