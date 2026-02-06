@@ -1,58 +1,39 @@
 <?php
 
-namespace App\Controller\Home;
+namespace App\Controller\Profile;
 
-use App\Service\TweetService;
-use App\Service\LikeService;
-use App\Service\UserService;
+use App\Repository\UserRepository;
 use App\Service\CommentService;
+use App\Service\LikeService;
+use App\Service\TweetService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class IndexController extends AbstractController
+final class ShowController extends AbstractController
 {
-    #[Route('/', name: 'app_home_index', methods: ['GET'])]
+    #[Route('/profile/{id}', name: 'profile')]
     public function index
     (
+        int $id,
+        UserRepository $userRepository,
         TweetService $tweetService,
         LikeService $likeService,
-        UserService $userService,
-        CommentService $commentService,
-
-        #[MapQueryParameter]
-        int $page = 1,
-
-        #[MapQueryParameter]
-        int $limit = 10,
+        CommentService $commentService
     ): Response
     {
-        $user = $this->getUser();
+        $user = $userRepository->find($id);
         if (!$user) {
-            return $this->redirectToRoute('app_login');
+            throw $this->createNotFoundException('Utilisateur non trouvé');
         }
 
-        $tweets = $tweetService->findFollowTimelineByUserId($user->getId(), $page, 10);
-        $nbTwets = count($tweets);
-        $maxPaginationPage = 1;
-        if ($nbTwets > 0) {
-            if ($nbTwets <= $limit) {
-                $maxPaginationPage = 1;
-            } elseif ($nbTwets <= 10 * $limit) {
-                $maxPaginationPage = ceil($nbTwets / $limit);
-            }
-        }
+        $tweets = $tweetService->findTweetsByUserId($id);
 
-        $suggestions = $userService->findSuggestions($user->getId());
-
-        return $this->render('home/index/index.html.twig', [
+        return $this->render('profile/show/index.html.twig', [
+            'user' => $user,
             'tweets' => $tweets,
-            'currentPage' => $page,
-            'maxPaginationPage' => $maxPaginationPage,
             'likeService' => $likeService,
             'commentService' => $commentService,
-            'suggestions' => $suggestions,
         ]);
     }
 }

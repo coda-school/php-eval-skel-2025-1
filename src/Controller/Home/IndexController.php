@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class IndexController extends AbstractController
 {
-    #[Route('/home', name: 'home', methods: ['GET'])]
+    #[Route('/', name: 'home', methods: ['GET'])]
     public function index
     (
         TweetService $tweetService,

@@ -54,6 +54,6 @@ final class LikeController extends AbstractController
         }
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_home_index');
+        return $this->redirectToRoute('home');
     }
 }
